@@ -30,7 +30,7 @@ def operations_callback(ops: defaultdict) -> None:
         )
 
         # only alf-related posts
-        if 'alf' in record.text.lower():
+        if '#microsoft' in record.text.lower():
             reply_root = reply_parent = None
             if record.reply:
                 reply_root = record.reply.root.uri

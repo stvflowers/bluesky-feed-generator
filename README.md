@@ -1,3 +1,9 @@
+## Steve Flowers Notes ##
+- Customized for Microsoft feed
+- Added startup.py shim for Azure Web App deploy // gunicorn
+
+
+
 ## ATProto Feed Generator powered by [The AT Protocol SDK for Python](https://github.com/MarshalX/atproto)
 
 > Feed Generators are services that provide custom algorithms to users through the AT Protocol.
