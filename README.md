@@ -1,6 +1,8 @@
 ## Steve Flowers Notes ##
 - Customized for Microsoft feed
 - Added startup.py shim for Azure Web App deploy // gunicorn
+- Updated data_filter to include keyword list and filter by post date
+- Genericized code base to remove "whats alf" references
 
 
 
@@ -40,7 +42,7 @@ pip install -r requirements.txt
 Copy `.env.example` as `.env`. Fill the variables.
 
 > **Note**
-> To get value for "WHATS_ALF_URI" you should publish the feed first. 
+> To get value for "FEED_GEN_URI" you should publish the feed first. 
 
 Run development flask server:
 ```shell
