@@ -1,5 +1,5 @@
-from . import whats_alf
+from . import feed_generator
 
 algos = {
-    whats_alf.uri: whats_alf.handler
+    feed_generator.uri: feed_generator.handler
 }

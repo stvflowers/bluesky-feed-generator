@@ -45,7 +45,7 @@ def operations_callback(ops: defaultdict) -> None:
             f': {inlined_text}'
         )
 
-        # only alf-related posts
+        # only posts relating to keywords list in the last day
         if any(keyword in record.text.lower() for keyword in textFilterList) and record.created_at > strTimestamp:
             reply_root = reply_parent = None
             if record.reply:
