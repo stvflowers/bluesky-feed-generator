@@ -1,9 +1,22 @@
+from datetime import datetime, timedelta
+
 from collections import defaultdict
 
 from atproto import models
 
 from server.logger import logger
 from server.database import db, Post
+
+textFilterList = [
+    "microsoft",
+    "#microsoft",
+    "#msazure",
+    "microsoft azure",
+    "#microsoftazure",
+    "msft",
+    "#msft",
+    "satya nadella"
+]
 
 
 def operations_callback(ops: defaultdict) -> None:
@@ -12,6 +25,9 @@ def operations_callback(ops: defaultdict) -> None:
     # Also, we should process deleted posts to remove them from our DB and keep it in sync
 
     # for example, let's create our custom feed that will contain all posts that contains alf related text
+
+    myTimestamp = datetime.today() - timedelta(days=1)
+    strTimestamp = myTimestamp.strftime('%Y-%m-%d')
 
     posts_to_create = []
     for created_post in ops[models.ids.AppBskyFeedPost]['created']:
@@ -30,7 +46,7 @@ def operations_callback(ops: defaultdict) -> None:
         )
 
         # only alf-related posts
-        if '#microsoft' in record.text.lower():
+        if any(keyword in record.text.lower() for keyword in textFilterList) and record.created_at > strTimestamp:
             reply_root = reply_parent = None
             if record.reply:
                 reply_root = record.reply.root.uri
