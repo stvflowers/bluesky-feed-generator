@@ -26,8 +26,8 @@ def operations_callback(ops: defaultdict) -> None:
 
     # for example, let's create our custom feed that will contain all posts that contains alf related text
 
-    myTimestamp = datetime.today() - timedelta(days=1)
-    strTimestamp = myTimestamp.strftime('%Y-%m-%d')
+    #myTimestamp = datetime.today() - timedelta(days=1)
+    #strTimestamp = myTimestamp.strftime('%Y-%m-%d')
 
     posts_to_create = []
     for created_post in ops[models.ids.AppBskyFeedPost]['created']:
@@ -37,20 +37,30 @@ def operations_callback(ops: defaultdict) -> None:
         # print all texts just as demo that data stream works
         post_with_images = isinstance(record.embed, models.AppBskyEmbedImages.Main)
         inlined_text = record.text.replace('\n', ' ')
-        logger.info(
-            f'NEW POST '
-            f'[CREATED_AT={record.created_at}]'
-            f'[AUTHOR={author}]'
-            f'[WITH_IMAGE={post_with_images}]'
-            f': {inlined_text}'
-        )
+        # logger.info(
+        #     f'NEW POST '
+        #     f'[CREATED_AT={record.created_at}]'
+        #     f'[AUTHOR={author}]'
+        #     f'[WITH_IMAGE={post_with_images}]'
+        #     f': {inlined_text}'
+        # )
 
         # only posts relating to keywords list in the last day
-        if any(keyword in record.text.lower() for keyword in textFilterList) and record.created_at > strTimestamp:
+        #if any(keyword in record.text.lower() for keyword in textFilterList) and record.created_at > strTimestamp:
+        if any(keyword in record.text.lower() for keyword in textFilterList):
             reply_root = reply_parent = None
             if record.reply:
                 reply_root = record.reply.root.uri
                 reply_parent = record.reply.parent.uri
+
+            logger.info(
+                f'NEW POST '
+                f'[CREATED_AT={record.created_at}]'
+                f'[AUTHOR={author}]'
+                f'[WITH_IMAGE={post_with_images}]'
+                f': {inlined_text}'
+            )
+
 
             post_dict = {
                 'uri': created_post['uri'],
@@ -64,10 +74,10 @@ def operations_callback(ops: defaultdict) -> None:
     if posts_to_delete:
         post_uris_to_delete = [post['uri'] for post in posts_to_delete]
         Post.delete().where(Post.uri.in_(post_uris_to_delete))
-        logger.info(f'Deleted from feed: {len(post_uris_to_delete)}')
+        #logger.info(f'Deleted from feed: {len(post_uris_to_delete)}')
 
     if posts_to_create:
         with db.atomic():
             for post_dict in posts_to_create:
-                Post.create(**post_dict)
+                Post.create(**post_dict) # ** unpacks dict {"uri, cid, etc"}
         logger.info(f'Added to feed: {len(posts_to_create)}')

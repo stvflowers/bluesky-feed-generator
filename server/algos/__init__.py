@@ -1,5 +1,5 @@
-from . import feed_generator
+from . import microsoft
 
 algos = {
-    feed_generator.uri: feed_generator.handler
+    microsoft.uri: microsoft.handler
 }
