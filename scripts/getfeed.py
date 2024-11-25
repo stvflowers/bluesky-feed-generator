@@ -56,7 +56,7 @@ def main():
             avatar_data = f.read()
             avatar_blob = client.upload_blob(avatar_data).blob
 
-    response = client.com.atproto.repo.put_record(models.ComAtprotoRepoPutRecord.Data(
+    response = client.com.atproto.repo.get_record(models.AppBskyFeedGetFeed(
         repo=client.me.did,
         collection=models.ids.AppBskyFeedGenerator,
         rkey=RECORD_NAME,
@@ -69,8 +69,7 @@ def main():
         )
     ))
 
-    print('Successfully published!')
-    print('Feed URI (put in "WHATS_ALF_URI" env var):', response.uri)
+    print('Successfully un-published!')
 
 
 if __name__ == '__main__':

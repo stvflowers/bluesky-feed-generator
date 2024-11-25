@@ -2,7 +2,6 @@
 .env.example
 feed_database.db
 feed_database.db-journal
-publish_feed.py
 
 
 .DS_Store
